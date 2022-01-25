@@ -86,7 +86,7 @@
 	}
 
 
-	$: notZoomable = !userLogicalWidth || !userPhysicalWidth || !userPPI;
+	$: notZoomable = !userLogicalWidth || !userPhysicalWidth || !userPPI || !targetPixelRatio || !targetPPI;
 </script>
 
 
@@ -101,12 +101,12 @@
 		<div class="manual">
 			<div class="input pr-xxsmall">
 				<Label>PPI</Label>
-				<Input placeholder="227" bind:value={userPPI} class="mb-xxsmall"/>
+				<Input on:change={getUserDimensions} placeholder="227" bind:value={userPPI} class="mb-xxsmall"/>
 			</div>
 
 			<div class="input">
 				<Label>Screen width in pixels</Label>
-				<Input placeholder="2560" bind:value={userPhysicalWidth} class="mb-xxsmall"/>
+				<Input on:change={getUserDimensions} placeholder="2560" bind:value={userPhysicalWidth} class="mb-xxsmall"/>
 			</div>
 		</div>
 	{/if}
@@ -117,6 +117,20 @@
 	<div class="pr-xxsmall pl-xxsmall mt-negative mb-xxsmall">
 		<Type>Select the screen the are design is for</Type>
 	</div>
+
+	{#if selectedTargetScreen && selectedTargetScreen.value === 'custom'}
+		<div class="manual">
+			<div class="input pr-xxsmall">
+				<Label>PPI</Label>
+				<Input on:change={getTargetDimensions} placeholder="460" bind:value={targetPPI} class="mb-xxsmall"/>
+			</div>
+
+			<div class="input">
+				<Label>Pixel ratio</Label>
+				<Input on:change={getTargetDimensions} placeholder="3" bind:value={targetPixelRatio} class="mb-xxsmall"/>
+			</div>
+		</div>
+	{/if}
 	
 
 	<div class="flex p-xxsmall mb-xsmall">
