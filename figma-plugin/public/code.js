@@ -1,20 +1,32 @@
 'use strict';
 
 figma.showUI(__html__, { width: 375, height: 512 });
+// Plugin data
+const userDimensionsKey = "USER_DIMENSIONS";
+const targetDimensionsKey = "TARGET_DIMENSIONS";
+let storedUserDimensions = figma.root.getPluginData(userDimensionsKey);
+let storedTargetDimensions = figma.root.getPluginData(targetDimensionsKey);
 // // User screen specifications
-let userDimensions = {
-    physicalWidth: 0,
-    logicalWidth: 0,
-    ppi: 0,
-    pixelRatio: 0,
-};
+let userDimensions = storedUserDimensions
+    ? JSON.parse(storedUserDimensions)
+    : {
+        physicalWidth: 0,
+        logicalWidth: 0,
+        ppi: 0,
+        pixelRatio: 0,
+        value: "",
+    };
 // Target screen specifications
-let targetDimensions = {
-    ppi: 0,
-    pixelRatio: 0,
-};
+let targetDimensions = storedTargetDimensions
+    ? JSON.parse(storedTargetDimensions)
+    : {
+        ppi: 0,
+        pixelRatio: 0,
+        value: "",
+    };
 let zoomLevel;
-console.log();
+console.log(targetDimensions);
+console.log(userDimensions);
 figma.ui.onmessage = (msg) => {
     switch (msg.type) {
         case "get-user-dimensions":
@@ -23,10 +35,14 @@ figma.ui.onmessage = (msg) => {
             userDimensions.physicalWidth = msg.userPhysicalWidth;
             userDimensions.pixelRatio =
                 userDimensions.physicalWidth / userDimensions.logicalWidth;
+            userDimensions.value = msg.value;
+            figma.root.setPluginData(userDimensionsKey, JSON.stringify(userDimensions));
             break;
         case "get-target-dimensions":
             targetDimensions.ppi = msg.targetPPI;
             targetDimensions.pixelRatio = msg.targetPixelRatio;
+            targetDimensions.value = msg.value;
+            figma.root.setPluginData(targetDimensionsKey, JSON.stringify(targetDimensions));
             break;
         case "set-zoom":
             zoomLevel =
@@ -38,4 +54,3 @@ figma.ui.onmessage = (msg) => {
             break;
     }
 };
-//# sourceMappingURL=code.js.map

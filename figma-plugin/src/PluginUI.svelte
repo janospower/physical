@@ -4,11 +4,13 @@
 
 	let userPhysicalWidth;
 	let userPPI;
+	let userValue;
 	
 	let userLogicalWidth;
 
 	let targetPixelRatio;
 	let targetPPI;
+	let targetValue
 
 	let scale;
 	let zoomed;
@@ -34,8 +36,8 @@
 		{ 'value': '27wqhd', 'ppi': '109', 'label': '27" WQHD', 'group': 'wqhd', 'selected': false, 'width': '2560'},
 		{ 'value': '32wqhd', 'ppi': '92', 'label': '32" WQHD', 'group': 'wqhd', 'selected': false, 'width': '2560'},
 	];
-	let selectedScreen;
-	$: console.log(selectedScreen);
+	let selectedUserScreen;
+	$: console.log(selectedUserScreen);
 	
 	function checkScale(){
 		scale = window.devicePixelRatio;
@@ -47,15 +49,17 @@
 	function getUserDimensions() {
 		checkScale()
 		userLogicalWidth =  window.screen.width;
-		if (selectedScreen.value !== 'custom') {
-			userPhysicalWidth = selectedScreen.width;
-			userPPI = selectedScreen.ppi;
+		if (selectedUserScreen.value !== 'custom') {
+			userPhysicalWidth = selectedUserScreen.width;
+			userPPI = selectedUserScreen.ppi;
 		}
+		userValue = selectedUserScreen.value;
 		parent.postMessage({ pluginMessage: { 
 			'type': 'get-user-dimensions', 
 			'userLogicalWidth': userLogicalWidth,
 			'userPhysicalWidth': userPhysicalWidth,
-			'userPPI': userPPI
+			'userPPI': userPPI,
+			'value': userValue
 		}}, '*');
 	}
 	
@@ -78,10 +82,12 @@
 			targetPixelRatio = selectedTargetScreen.ratio;
 			targetPPI = selectedTargetScreen.ppi;
 		}
+		targetValue = selectedTargetScreen.value;
 		parent.postMessage({ pluginMessage: { 
 			'type': 'get-target-dimensions', 
 			'targetPixelRatio': targetPixelRatio,
-			'targetPPI': targetPPI
+			'targetPPI': targetPPI,
+			'value': targetValue
 		}}, '*');
 	}
 
@@ -92,12 +98,12 @@
 
 <div class="wrapper p-xxsmall">
 	<Label>Monitor</Label>
-	<SelectMenu on:change={getUserDimensions} bind:menuItems={userScreenType} bind:value={selectedScreen} placeholder="No monitor selected …" class="mb-xxsmall"/>
+	<SelectMenu on:change={getUserDimensions} bind:menuItems={userScreenType} bind:value={selectedUserScreen} placeholder="No monitor selected …" class="mb-xxsmall"/>
 	<div class="pr-xxsmall pl-xxsmall mt-negative mb-xxsmall">
 		<Type>Select the screen Figma is currently displayed on</Type>
 	</div>
 
-	{#if selectedScreen && selectedScreen.value === 'custom'}
+	{#if selectedUserScreen && selectedUserScreen.value === 'custom'}
 		<div class="manual">
 			<div class="input pr-xxsmall">
 				<Label>PPI</Label>
