@@ -25,6 +25,10 @@ figma.ui.onmessage = (msg) => {
       console.log(`Figma UI zoom active: ${zoomed}`);
       break;
 
+    case "set-zoom":
+      console.log(`Zoom: ${zoomed}`);
+      break;
+
     default:
       break;
   }

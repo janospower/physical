@@ -21,5 +21,8 @@ figma.ui.onmessage = (msg) => {
             zoomed = msg.zoom !== 2;
             console.log(`Figma UI zoom active: ${zoomed}`);
             break;
+        case "set-zoom":
+            console.log(`Zoom: ${zoomed}`);
+            break;
     }
 };
