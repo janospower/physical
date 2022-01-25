@@ -5,14 +5,13 @@ let userPPI;
 let userPhysicalWidth;
 let userLogicalWidth;
 let zoomed;
+let userPixelRatio;
 
-// // Target screen specifications
-// let referenceScreenPpi;
-// let referenceScreenX;
+// Target screen specifications
+let targetPPI;
+let targetPixelRatio;
 
-// let referencePixelRatio = userPhysicalWidth / userLogicalWidth;
-// let zoomLevel = userPPI / referenceScreenPpi / referencePixelRatio;
-// figma.viewport.zoom = zoomLevel;
+let zoomLevel;
 
 console.log();
 
@@ -23,11 +22,14 @@ figma.ui.onmessage = (msg) => {
       console.log(`User screen width (logical): ${userLogicalWidth}`);
       userPPI = msg.userPPI;
       userPhysicalWidth = msg.userPhysicalWidth;
+      userPixelRatio = userPhysicalWidth / userLogicalWidth;
+      //   zoomLevel = userPPI / referenceScreenPpi / referencePixelRatio;
       console.log(`userPPI: ${userPPI}`);
       console.log(`userPhysicalWidth: ${userPhysicalWidth}`);
       break;
 
     case "set-zoom":
+      //   figma.viewport.zoom = zoomLevel;
       break;
 
     default:

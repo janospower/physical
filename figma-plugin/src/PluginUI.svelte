@@ -60,9 +60,6 @@
 		}}, '*');
 	}
 
-	function selectionChanged() {
-		getUserDimensions()
-	}
 
 	$: console.log(selectedScreen);
 
@@ -72,9 +69,8 @@
 
 
 <div class="wrapper p-xxsmall">
-
 	<Label>Monitor</Label>
-	<SelectMenu on:change={selectionChanged} bind:menuItems={userScreenType} bind:value={selectedScreen} placeholder="No monitor selected …" class="mb-xxsmall"/>
+	<SelectMenu on:change={getUserDimensions} bind:menuItems={userScreenType} bind:value={selectedScreen} placeholder="No monitor selected …" class="mb-xxsmall"/>
 	<div class="pr-xxsmall pl-xxsmall mt-negative mb-xxsmall">
 		<Type>Select the screen Figma is currently displayed on</Type>
 	</div>
@@ -92,6 +88,13 @@
 			</div>
 		</div>
 	{/if}
+</div>
+<div class="wrapper p-xxsmall">
+	<Label>Target device</Label>
+	<SelectMenu on:change={getUserDimensions} bind:menuItems={userScreenType} bind:value={selectedScreen} placeholder="No monitor selected …" class="mb-xxsmall"/>
+	<div class="pr-xxsmall pl-xxsmall mt-negative mb-xxsmall">
+		<Type>Select the screen Figma is currently displayed on</Type>
+	</div>
 	
 
 	<div class="flex p-xxsmall mb-xsmall">
