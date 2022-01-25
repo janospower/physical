@@ -6,6 +6,10 @@
 	let userPPI;
 	
 	let userLogicalWidth;
+
+	let targetPixelRatio;
+	let targetPPI;
+
 	let scale;
 	let zoomed;
 	
@@ -30,7 +34,8 @@
 		{ 'value': '27wqhd', 'ppi': '109', 'label': '27" WQHD', 'group': 'wqhd', 'selected': false, 'width': '2560'},
 		{ 'value': '32wqhd', 'ppi': '92', 'label': '32" WQHD', 'group': 'wqhd', 'selected': false, 'width': '2560'},
 	];
-	let selectedScreen; // = userScreenType[userScreenType.length - 1]
+	let selectedScreen;
+	$: console.log(selectedScreen);
 	
 	function checkScale(){
 		scale = window.devicePixelRatio;
@@ -38,6 +43,7 @@
 	}
 	checkScale()
 
+	
 	function getUserDimensions() {
 		checkScale()
 		userLogicalWidth =  window.screen.width;
@@ -46,22 +52,38 @@
 			userPPI = selectedScreen.ppi;
 		}
 		parent.postMessage({ pluginMessage: { 
-			'type': 'get-width', 
+			'type': 'get-user-dimensions', 
 			'userLogicalWidth': userLogicalWidth,
 			'userPhysicalWidth': userPhysicalWidth,
 			'userPPI': userPPI
 		}}, '*');
 	}
-
+	
 	function setZoom() {
 		getUserDimensions()
 		parent.postMessage({ pluginMessage: { 
 			'type': 'set-zoom'
 		}}, '*');
 	}
+	
+	let targetScreenType = [
+		{ 'value': 'custom', 'ppi': '', 'label': 'Custom', 'group': 'other', 'selected': false, 'ratio': ''},
+		{ 'value': 'ip13p', 'ppi': '460', 'label': 'iPhone 13 / 13 Pro', 'group': 'other', 'selected': false, 'ratio': '3'},
+	];
+	let selectedTargetScreen;
+	$: console.log(selectedTargetScreen);
 
-
-	$: console.log(selectedScreen);
+	function getTargetDimensions() {
+		if (selectedTargetScreen.value !== 'custom') {
+			targetPixelRatio = selectedTargetScreen.ratio;
+			targetPPI = selectedTargetScreen.ppi;
+		}
+		parent.postMessage({ pluginMessage: { 
+			'type': 'get-target-dimensions', 
+			'targetPixelRatio': targetPixelRatio,
+			'targetPPI': targetPPI
+		}}, '*');
+	}
 
 
 	$: notZoomable = !userLogicalWidth || !userPhysicalWidth || !userPPI;
@@ -91,9 +113,9 @@
 </div>
 <div class="wrapper p-xxsmall">
 	<Label>Target device</Label>
-	<SelectMenu on:change={getUserDimensions} bind:menuItems={userScreenType} bind:value={selectedScreen} placeholder="No monitor selected …" class="mb-xxsmall"/>
+	<SelectMenu on:change={getTargetDimensions} bind:menuItems={targetScreenType} bind:value={selectedTargetScreen} placeholder="No target selected …" class="mb-xxsmall"/>
 	<div class="pr-xxsmall pl-xxsmall mt-negative mb-xxsmall">
-		<Type>Select the screen Figma is currently displayed on</Type>
+		<Type>Select the screen the are design is for</Type>
 	</div>
 	
 

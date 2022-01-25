@@ -17,19 +17,21 @@ console.log();
 
 figma.ui.onmessage = (msg) => {
   switch (msg.type) {
-    case "get-width":
+    case "get-user-dimensions":
       userLogicalWidth = msg.userLogicalWidth;
-      console.log(`User screen width (logical): ${userLogicalWidth}`);
       userPPI = msg.userPPI;
       userPhysicalWidth = msg.userPhysicalWidth;
       userPixelRatio = userPhysicalWidth / userLogicalWidth;
-      //   zoomLevel = userPPI / referenceScreenPpi / referencePixelRatio;
-      console.log(`userPPI: ${userPPI}`);
-      console.log(`userPhysicalWidth: ${userPhysicalWidth}`);
+      break;
+
+    case "get-target-dimensions":
+      targetPPI = msg.targetPPI;
+      targetPixelRatio = msg.targetPixelRatio;
       break;
 
     case "set-zoom":
-      //   figma.viewport.zoom = zoomLevel;
+      zoomLevel = (userPPI / userPixelRatio / targetPPI) * targetPixelRatio;
+      figma.viewport.zoom = zoomLevel;
       break;
 
     default:
