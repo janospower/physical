@@ -2,13 +2,12 @@
 	import { GlobalCSS } from 'figma-plugin-ds-svelte';
 	import { Button, Icon, IconWarning, Input, Label, OnboardingTip, SelectMenu, Type } from 'figma-plugin-ds-svelte';
 
-	let customWidth;
-	let customPPI;
+	let userPhysicalWidth;
+	let userPPI;
 	
 	let userLogicalWidth;
-	let zoom;
+	let scale = window.devicePixelRatio;
 	let zoomed;
-	getWidth()
 	
 	
 	let userScreenType = [
@@ -33,35 +32,47 @@
 	];
 	let selectedScreen; // = userScreenType[userScreenType.length - 1]
 	
+	function checkScale(){
+		scale = window.devicePixelRatio;
+	}
 
-	function getWidth() {
+	function getUserDimensions() {
+		checkScale()
 		userLogicalWidth =  window.screen.width;
-		zoom = window.devicePixelRatio;
+		userPhysicalWidth = selectedScreen.width;
+		userPPI = selectedScreen.value;
 		parent.postMessage({ pluginMessage: { 
 			'type': 'get-width', 
 			'userLogicalWidth': userLogicalWidth,
-			'zoom': zoom
+			'userPhysicalWidth': userPhysicalWidth,
+			'userPPI': userPPI
 		}}, '*');
 	}
 
 	function setZoom() {
-		getWidth()
+		getUserDimensions()
 		parent.postMessage({ pluginMessage: { 
 			'type': 'set-zoom'
 		}}, '*');
-
 	}
 
-	$: zoomed = !(zoom === 2 || zoom === 1);
+	function selectionChanged() {
+		getUserDimensions()
+	}
+
+	$: zoomed = !(scale === 2 || scale === 1);
 
 	$: console.log(selectedScreen);
+
+
+	$: notZoomable = true && !userLogicalWidth && !userPhysicalWidth && !userPPI;
 </script>
 
 
 <div class="wrapper p-xxsmall">
 
 	<Label>Monitor</Label>
-	<SelectMenu bind:menuItems={userScreenType} bind:value={selectedScreen} placeholder="No monitor selected …" class="mb-xxsmall"/>
+	<SelectMenu on:change={selectionChanged} bind:menuItems={userScreenType} bind:value={selectedScreen} placeholder="No monitor selected …" class="mb-xxsmall"/>
 	<div class="pr-xxsmall pl-xxsmall mt-negative mb-xxsmall">
 		<Type>Select the screen Figma is currently displayed on</Type>
 	</div>
@@ -70,19 +81,19 @@
 		<div class="manual">
 			<div class="input pr-xxsmall">
 				<Label>PPI</Label>
-				<Input placeholder="227" bind:value={customPPI} class="mb-xxsmall"/>
+				<Input placeholder="227" bind:value={userPPI} class="mb-xxsmall"/>
 			</div>
 
 			<div class="input">
 				<Label>Screen width in pixels</Label>
-				<Input placeholder="2560" bind:value={customWidth} class="mb-xxsmall"/>
+				<Input placeholder="2560" bind:value={userPhysicalWidth} class="mb-xxsmall"/>
 			</div>
 		</div>
 	{/if}
 	
 
 	<div class="flex p-xxsmall mb-xsmall">
-	<Button on:click={setZoom} >Set zoom level</Button>
+	<Button on:click={setZoom} bind:disabled={notZoomable}>Set zoom level</Button>
 	</div>
 
 </div>
@@ -92,14 +103,17 @@
 		<div class="alert p-small center">
 			<Icon iconName={IconWarning} color="black"/>
 			<div class="m-xxsmall mb-xsmall center">
-				<Type size="small" weight="bold">
+				<Type size="large" weight="bold">
 				Figma UI is scaled. 
 				</Type>
-				<Type>	
-				Please reset UI scale and try again.
+				<Type size="small">	
+				Reset 
+		<a href="https://help.figma.com/hc/en-us/articles/360049549913-Adjust-Figma-s-UI-scale" rel="noopener" target="_blank"
+			>UI scaling
+		</a> and try again.
 				</Type>
 			</div>
-			<Button on:click={getWidth} >Retry</Button>
+			<Button on:click={checkScale} >Retry</Button>
 		</div>
 	</div>
 {/if}
@@ -129,8 +143,8 @@
 	}
 	.alert {
 		background-color: white;
-		border-radius: 2px;
-		border: 1px solid var(--black3-opaque);
+		border-radius: 3px;
+		border: 0.5px solid var(--silver);
 		box-shadow: var(--shadow-floating-window);
 	}
 	.center {
