@@ -115,7 +115,7 @@
 	<Label>Target device</Label>
 	<SelectMenu on:change={getTargetDimensions} bind:menuItems={targetScreenType} bind:value={selectedTargetScreen} placeholder="No target selected …" class="mb-xxsmall"/>
 	<div class="pr-xxsmall pl-xxsmall mt-negative mb-xxsmall">
-		<Type>Select the screen the are design is for</Type>
+		<Type>Select the device you are designing for</Type>
 	</div>
 
 	{#if selectedTargetScreen && selectedTargetScreen.value === 'custom'}
@@ -127,7 +127,7 @@
 
 			<div class="input">
 				<Label>Pixel ratio</Label>
-				<Input on:change={getTargetDimensions} placeholder="3" bind:value={targetPixelRatio} class="mb-xxsmall"/>
+				<Input on:change={getTargetDimensions} placeholder="1" bind:value={targetPixelRatio} class="mb-xxsmall"/>
 			</div>
 		</div>
 	{/if}

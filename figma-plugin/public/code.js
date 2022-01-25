@@ -2,29 +2,38 @@
 
 figma.showUI(__html__, { width: 375, height: 512 });
 // // User screen specifications
-let userPPI;
-let userPhysicalWidth;
-let userLogicalWidth;
-let userPixelRatio;
+let userDimensions = {
+    physicalWidth: 0,
+    logicalWidth: 0,
+    ppi: 0,
+    pixelRatio: 0,
+};
 // Target screen specifications
-let targetPPI;
-let targetPixelRatio;
+let targetDimensions = {
+    ppi: 0,
+    pixelRatio: 0,
+};
 let zoomLevel;
 console.log();
 figma.ui.onmessage = (msg) => {
     switch (msg.type) {
         case "get-user-dimensions":
-            userLogicalWidth = msg.userLogicalWidth;
-            userPPI = msg.userPPI;
-            userPhysicalWidth = msg.userPhysicalWidth;
-            userPixelRatio = userPhysicalWidth / userLogicalWidth;
+            userDimensions.logicalWidth = msg.userLogicalWidth;
+            userDimensions.ppi = msg.userPPI;
+            userDimensions.physicalWidth = msg.userPhysicalWidth;
+            userDimensions.pixelRatio =
+                userDimensions.physicalWidth / userDimensions.logicalWidth;
             break;
         case "get-target-dimensions":
-            targetPPI = msg.targetPPI;
-            targetPixelRatio = msg.targetPixelRatio;
+            targetDimensions.ppi = msg.targetPPI;
+            targetDimensions.pixelRatio = msg.targetPixelRatio;
             break;
         case "set-zoom":
-            zoomLevel = (userPPI / userPixelRatio / targetPPI) * targetPixelRatio;
+            zoomLevel =
+                (userDimensions.ppi /
+                    userDimensions.pixelRatio /
+                    targetDimensions.ppi) *
+                    targetDimensions.pixelRatio;
             figma.viewport.zoom = zoomLevel;
             break;
     }
