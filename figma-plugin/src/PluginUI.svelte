@@ -6,41 +6,45 @@
 	let userPPI;
 	
 	let userLogicalWidth;
-	let scale = window.devicePixelRatio;
+	let scale;
 	let zoomed;
 	
 	
 	let userScreenType = [
-		{ 'value': 'custom', 'label': 'Custom', 'group': 'other', 'selected': false, 'width': '1'},
-		{ 'value': '227', 'label': 'MacBook Pro 13" (2012 or later)', 'group': 'mbp', 'selected': false, 'width': '2560'},
-		{ 'value': '254', 'label': 'MacBook Pro 14" M1', 'group': 'mbp', 'selected': false, 'width': '3024'},
-		{ 'value': '221', 'label': 'MacBook Pro 15" (2012 or later)', 'group': 'mbp', 'selected': false, 'width': '2880'},
-		{ 'value': '226', 'label': 'MacBook Pro 16" (2019 or later)', 'group': 'mbp', 'selected': false, 'width': '3072'},
-		{ 'value': '254', 'label': 'MacBook Pro 16" M1', 'group': 'mbp', 'selected': false, 'width': '3456'},
-		{ 'value': '227', 'label': 'MacBook Air (2018 or later)', 'group': 'mb', 'selected': false, 'width': '2560'},
-		{ 'value': '226', 'label': 'MacBook (2018 or later)', 'group': 'mb', 'selected': false, 'width': '2304'},
-		{ 'value': '219', 'label': 'iMac 21.5" (2015 or later)', 'group': 'mac', 'selected': false, 'width': '4096'},
-		{ 'value': '218', 'label': 'iMac 24" (2015 or later)', 'group': 'mac', 'selected': false, 'width': '4480'},
-		{ 'value': '218', 'label': 'iMac 27" (2015 or later)', 'group': 'mac', 'selected': false, 'width': '5120'},
-		{ 'value': '218', 'label': 'Pro Display XDR (2015 or later)', 'group': 'mac', 'selected': false, 'width': '6016'},
-		{ 'value': '105', 'label': '21" Full HD', 'group': 'fullhd', 'selected': false, 'width': '1920'},
-		{ 'value': '92', 'label': '24" Full HD', 'group': 'fullhd', 'selected': false, 'width': '1920'},
-		{ 'value': '82', 'label': '27" Full HD', 'group': 'fullhd', 'selected': false, 'width': '1920'},
-		{ 'value': '122', 'label': '24" WQHD', 'group': 'wqhd', 'selected': false, 'width': '2560'},
-		{ 'value': '109', 'label': '27" WQHD', 'group': 'wqhd', 'selected': false, 'width': '2560'},
-		{ 'value': '92', 'label': '32" WQHD', 'group': 'wqhd', 'selected': false, 'width': '2560'},
+		{ 'value': 'custom', 'ppi': '', 'label': 'Custom', 'group': 'other', 'selected': false, 'width': ''},
+		{ 'value': 'mbp13', 'ppi': '227', 'label': 'MacBook Pro 13" (2012 or later)', 'group': 'mbp', 'selected': false, 'width': '2560'},
+		{ 'value': 'mbp14', 'ppi': '254', 'label': 'MacBook Pro 14" M1', 'group': 'mbp', 'selected': false, 'width': '3024'},
+		{ 'value': 'mbp15', 'ppi': '221', 'label': 'MacBook Pro 15" (2012 or later)', 'group': 'mbp', 'selected': false, 'width': '2880'},
+		{ 'value': 'mbp16', 'ppi': '226', 'label': 'MacBook Pro 16" (2019 or later)', 'group': 'mbp', 'selected': false, 'width': '3072'},
+		{ 'value': 'mbp16m1', 'ppi': '254', 'label': 'MacBook Pro 16" M1', 'group': 'mbp', 'selected': false, 'width': '3456'},
+		{ 'value': 'mba', 'ppi': '227', 'label': 'MacBook Air (2018 or later)', 'group': 'mb', 'selected': false, 'width': '2560'},
+		{ 'value': 'mb', 'ppi': '226', 'label': 'MacBook (2018 or later)', 'group': 'mb', 'selected': false, 'width': '2304'},
+		{ 'value': 'im21', 'ppi': '219', 'label': 'iMac 21.5" (2015 or later)', 'group': 'mac', 'selected': false, 'width': '4096'},
+		{ 'value': 'im24', 'ppi': '218', 'label': 'iMac 24" (2015 or later)', 'group': 'mac', 'selected': false, 'width': '4480'},
+		{ 'value': 'im27', 'ppi': '218', 'label': 'iMac 27" (2015 or later)', 'group': 'mac', 'selected': false, 'width': '5120'},
+		{ 'value': 'xdr', 'ppi': '218', 'label': 'Pro Display XDR (2015 or later)', 'group': 'mac', 'selected': false, 'width': '6016'},
+		{ 'value': '21fullhd', 'ppi': '105', 'label': '21" Full HD', 'group': 'fullhd', 'selected': false, 'width': '1920'},
+		{ 'value': '24fullhd', 'ppi': '92', 'label': '24" Full HD', 'group': 'fullhd', 'selected': false, 'width': '1920'},
+		{ 'value': '27fullhd', 'ppi': '82', 'label': '27" Full HD', 'group': 'fullhd', 'selected': false, 'width': '1920'},
+		{ 'value': '24wqhd', 'ppi': '122', 'label': '24" WQHD', 'group': 'wqhd', 'selected': false, 'width': '2560'},
+		{ 'value': '27wqhd', 'ppi': '109', 'label': '27" WQHD', 'group': 'wqhd', 'selected': false, 'width': '2560'},
+		{ 'value': '32wqhd', 'ppi': '92', 'label': '32" WQHD', 'group': 'wqhd', 'selected': false, 'width': '2560'},
 	];
 	let selectedScreen; // = userScreenType[userScreenType.length - 1]
 	
 	function checkScale(){
 		scale = window.devicePixelRatio;
+		scale = scale >= 2 ? scale / 2 : scale;
 	}
+	checkScale()
 
 	function getUserDimensions() {
 		checkScale()
 		userLogicalWidth =  window.screen.width;
-		userPhysicalWidth = selectedScreen.width;
-		userPPI = selectedScreen.value;
+		if (selectedScreen.value !== 'custom') {
+			userPhysicalWidth = selectedScreen.width;
+			userPPI = selectedScreen.ppi;
+		}
 		parent.postMessage({ pluginMessage: { 
 			'type': 'get-width', 
 			'userLogicalWidth': userLogicalWidth,
@@ -60,12 +64,10 @@
 		getUserDimensions()
 	}
 
-	$: zoomed = !(scale === 2 || scale === 1);
-
 	$: console.log(selectedScreen);
 
 
-	$: notZoomable = true && !userLogicalWidth && !userPhysicalWidth && !userPPI;
+	$: notZoomable = !userLogicalWidth || !userPhysicalWidth || !userPPI;
 </script>
 
 
@@ -98,13 +100,13 @@
 
 </div>
 
-{#if zoomed}
+{#if !(scale === 1)}
 	<div class="alert-wrapper">
 		<div class="alert p-small center">
 			<Icon iconName={IconWarning} color="black"/>
 			<div class="m-xxsmall mb-xsmall center">
 				<Type size="large" weight="bold">
-				Figma UI is scaled. 
+				Figma UI scaled to {Math.round(scale*100)}%. 
 				</Type>
 				<Type size="small">	
 				Reset 
