@@ -1,6 +1,6 @@
 'use strict';
 
-figma.showUI(__html__, { width: 232, height: 208 });
+figma.showUI(__html__, { width: 375, height: 512 });
 // // User screen specifications
 // let userPPI;
 // let userPhysicalWidth;
@@ -18,7 +18,7 @@ figma.ui.onmessage = (msg) => {
         case "get-width":
             userLogicalWidth = msg.userLogicalWidth;
             console.log(`User screen width (logical): ${userLogicalWidth}`);
-            zoomed = msg.zoom;
+            zoomed = msg.zoom !== 2;
             console.log(`Figma UI zoom active: ${zoomed}`);
             break;
     }
