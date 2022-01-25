@@ -3,10 +3,11 @@
 	import { Button, Input, Label, SelectMenu } from 'figma-plugin-ds-svelte';
 	
 	let userLogicalWidth;
+	let zoom;
 	getWidth()
 
 
-	let menuItems = [
+	let userScreenType = [
         { 'value': 'rectangle', 'label': 'Rectangle', 'group': null, 'selected': false },
         { 'value': 'triangle', 'label': 'Triangle ', 'group': null, 'selected': false },
         { 'value': 'circle', 'label': 'Circle', 'group': null, 'selected': false }
@@ -14,9 +15,18 @@
 
 	function getWidth() {
 		userLogicalWidth =  window.screen.width;
+		zoom = window.outerWidth - window.innerWidth;
+		// console.log(zoom);
+		console.log(window.outerWidth);
+		console.log(window.innerWidth);
+		console.log(document.body.clientWidth);
+		console.log(window.devicePixelRatio);
+		console.log(window.screen.width);
+		console.log(window);
 		parent.postMessage({ pluginMessage: { 
-			'type': 'set-zoom', 
-			'userLogicalWidth': userLogicalWidth
+			'type': 'get-width', 
+			'userLogicalWidth': userLogicalWidth,
+			'zoom': zoom
 		} }, '*');
 	}
 
@@ -31,7 +41,7 @@
 <div class="wrapper p-xxsmall">
 
 	<Label>Shape</Label>
-	<SelectMenu bind:menuItems={menuItems} class="mb-xxsmall"/>
+	<SelectMenu bind:menuItems={userScreenType} class="mb-xxsmall"/>
 	
 
 	<div class="flex p-xxsmall mb-xsmall">
