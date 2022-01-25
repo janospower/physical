@@ -220,7 +220,7 @@
 		},
 		{
 			'value': 'ip13pm',
-			'ppi': '',
+			'ppi': '458',
 			'label': 'iPhone 13 Pro Max',
 			'group': 'iphone',
 			'selected': false,
@@ -236,7 +236,7 @@
 		},
 		{
 			'value': 'ip13m',
-			'ppi': '',
+			'ppi': '476',
 			'label': 'iPhone 13 mini',
 			'group': 'iphone',
 			'selected': false,
@@ -244,7 +244,7 @@
 		},
 		{
 			'value': 'ip11pm',
-			'ppi': '',
+			'ppi': '458',
 			'label': 'iPhone 11 Pro Max',
 			'group': 'iphone',
 			'selected': false,
@@ -252,7 +252,7 @@
 		},
 		{
 			'value': 'ip11p',
-			'ppi': '',
+			'ppi': '458',
 			'label': 'iPhone 11 Pro / X',
 			'group': 'iphone',
 			'selected': false,
@@ -260,15 +260,15 @@
 		},
 		{
 			'value': 'ipse',
-			'ppi': '',
+			'ppi': '326',
 			'label': 'iPhone SE',
 			'group': 'iphone',
 			'selected': false,
-			'ratio': '3'
+			'ratio': '2'
 		},
 		{
 			'value': 'ip8p',
-			'ppi': '',
+			'ppi': '401',
 			'label': 'iPhone 8 Plus',
 			'group': 'iphone',
 			'selected': false,
@@ -276,84 +276,36 @@
 		},
 		{
 			'value': 'ip8',
-			'ppi': '',
+			'ppi': '326',
 			'label': 'iPhone 8',
 			'group': 'iphone',
 			'selected': false,
-			'ratio': '3'
+			'ratio': '2'
 		},
 		{
-			'value': 'as',
-			'ppi': '',
-			'label': 'Android Small',
-			'group': 'android',
-			'selected': false,
-			'ratio': '3'
-		},
-		{
-			'value': 'al',
-			'ppi': '',
-			'label': 'Android Large',
-			'group': 'android',
-			'selected': false,
-			'ratio': '3'
-		},
-		{
-			'value': 'aw41',
-			'ppi': '',
-			'label': 'Apple Watch 41mm',
+			'value': 'aw',
+			'ppi': '326',
+			'label': 'Apple Watch (any)',
 			'group': 'watch',
 			'selected': false,
-			'ratio': '3'
-		},
-		{
-			'value': 'aw45',
-			'ppi': '',
-			'label': 'Apple Watch 45mm',
-			'group': 'watch',
-			'selected': false,
-			'ratio': '3'
-		},
-		{
-			'value': 'aw44',
-			'ppi': '',
-			'label': 'Apple Watch 44m',
-			'group': 'watch',
-			'selected': false,
-			'ratio': '3'
-		},
-		{
-			'value': 'aw40',
-			'ppi': '',
-			'label': 'Apple Watch 40mm',
-			'group': 'watch',
-			'selected': false,
-			'ratio': '3'
+			'ratio': '2'
 		},
 		{
 			'value': 'ipm8',
-			'ppi': '',
-			'label': 'iPad mini 8.3',
+			'ppi': '326',
+			'label': 'iPad mini 8.3"',
 			'group': 'tablet',
 			'selected': false,
-			'ratio': '3'
+			'ratio': '2'
 		},
 		{
-			'value': 'ipp11',
-			'ppi': '',
-			'label': 'iPad Pro 11"',
+			'value': 'ipp',
+			'ppi': '264',
+			'label': 'iPad Pro (any)',
 			'group': 'tablet',
 			'selected': false,
-			'ratio': '3'
-		},
-		{
-			'value': 'ipp12',
-			'ppi': '',
-			'label': 'iPad Pro 12.9"',
-			'group': 'tablet',
-			'selected': false,
-			'ratio': '3'
-		},
+			'ratio': '2'
+		}
 	];
 	let selectedTargetScreen;
 	$: console.log(selectedTargetScreen);
