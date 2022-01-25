@@ -27,10 +27,14 @@ let targetDimensions = storedTargetDimensions
       value: "",
     };
 
-let zoomLevel;
+if (storedUserDimensions && storedTargetDimensions) {
+  figma.ui.postMessage({
+    userValue: userDimensions.value,
+    targetValue: targetDimensions.value,
+  });
+}
 
-console.log(targetDimensions);
-console.log(userDimensions);
+let zoomLevel;
 
 figma.ui.onmessage = (msg) => {
   switch (msg.type) {

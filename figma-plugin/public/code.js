@@ -24,9 +24,13 @@ let targetDimensions = storedTargetDimensions
         pixelRatio: 0,
         value: "",
     };
+if (storedUserDimensions && storedTargetDimensions) {
+    figma.ui.postMessage({
+        userValue: userDimensions.value,
+        targetValue: targetDimensions.value,
+    });
+}
 let zoomLevel;
-console.log(targetDimensions);
-console.log(userDimensions);
 figma.ui.onmessage = (msg) => {
     switch (msg.type) {
         case "get-user-dimensions":

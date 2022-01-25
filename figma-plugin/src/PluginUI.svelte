@@ -93,6 +93,17 @@
 
 
 	$: notZoomable = !userLogicalWidth || !userPhysicalWidth || !userPPI || !targetPixelRatio || !targetPPI;
+
+	// Get stored data from Figma
+	onmessage = (event) => {
+		let storedTargetValue = event.data.pluginMessage.targetValue;
+		selectedTargetScreen = targetScreenType.find(n => n.value === storedTargetValue);
+		getTargetDimensions()
+
+		let storedUserValue = event.data.pluginMessage.userValue;
+		selectedUserScreen = userScreenType.find(n => n.value === storedUserValue);
+		getUserDimensions()
+	}
 </script>
 
 
