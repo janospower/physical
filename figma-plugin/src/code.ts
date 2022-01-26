@@ -3,9 +3,11 @@ figma.showUI(__html__, { width: 320, height: 512 });
 // Plugin data
 const userDimensionsKey = "USER_DIMENSIONS";
 const targetDimensionsKey = "TARGET_DIMENSIONS";
+const zoomVauleKey = "ZOOM_VALUE";
 
 let storedUserDimensions = figma.root.getPluginData(userDimensionsKey);
 let storedTargetDimensions = figma.root.getPluginData(targetDimensionsKey);
+let storedZoomValue = figma.root.getPluginData(zoomVauleKey);
 
 // // User screen specifications
 let userDimensions = storedUserDimensions
@@ -42,6 +44,16 @@ let zoomLevel;
 
 figma.ui.onmessage = (msg) => {
   switch (msg.type) {
+    case "zoom-to-last":
+      console.log(storedZoomValue);
+      if (storedZoomValue) {
+      } else {
+        figma.notify("No stored zoom level. Run plugin normally first");
+        figma.closePlugin;
+        return;
+      }
+      break;
+
     case "get-user-dimensions":
       userDimensions.logicalWidth = msg.userLogicalWidth;
       userDimensions.ppi = msg.userPPI;
@@ -89,6 +101,9 @@ figma.ui.onmessage = (msg) => {
       let zoomAnimation = setInterval(() => {
         if (zoomIncrement(zoomLevel)) {
           clearInterval(zoomAnimation);
+          figma.notify(
+            `Zoomed physical size (${Math.round(zoomLevel * 100)}%)`
+          );
           return;
         }
       }, 17);

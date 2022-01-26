@@ -1,8 +1,11 @@
 {
-  "name": "physical",
+  "name": "Physical",
   "id": "795096273369409539",
   "api": "1.0.0",
   "main": "code.js",
   "ui": "index.html",
-  "editorType": ["figma"]
+  "editorType": ["figma"],
+  "menu": [
+    { "name": "Zoom using last used settings", "command": "zoom-to-last" }
+  ]
 }
