@@ -44,6 +44,9 @@ let zoomLevel;
 
 figma.ui.onmessage = (msg) => {
   switch (msg.type) {
+    case "set-height":
+      figma.ui.resize(320, msg.value);
+      break;
     case "get-user-dimensions":
       userDimensions.logicalWidth = msg.userLogicalWidth;
       userDimensions.ppi = msg.userPPI;

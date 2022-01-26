@@ -12,6 +12,8 @@
 		SelectMenu,
 		Type
 	} from 'figma-plugin-ds-svelte';
+	import { onMount } from 'svelte';
+
 
 	let userPhysicalWidth;
 	let userPPI;
@@ -25,6 +27,23 @@
 
 	let scale;
 	let zoomed;
+
+	let wrapper;
+
+	function getHeight() {
+		setTimeout(() => {
+			parent.postMessage({
+			pluginMessage: {
+				'type': 'set-height',
+				'value': wrapper.offsetHeight
+			}
+		}, '*');
+		}, 100);
+	}
+
+	onMount(() => {
+		getHeight()
+	});
 
 
 	let userScreenType = [{
@@ -183,7 +202,6 @@
 
 
 	function getUserDimensions() {
-		checkScale()
 		userLogicalWidth = window.screen.width;
 		if (selectedUserScreen.value !== 'custom') {
 			userPhysicalWidth = selectedUserScreen.width;
@@ -199,6 +217,8 @@
 				'value': userValue
 			}
 		}, '*');
+		checkScale();
+		getHeight();
 	}
 
 	function setZoom() {
@@ -316,6 +336,8 @@
 				'value': targetValue
 			}
 		}, '*');
+
+		getHeight();
 	}
 
 
@@ -350,75 +372,76 @@
 	}
 </script>
 
+<div bind:this={wrapper}>
+	<div class="wrapper p-xxsmall">
+		<Label>Monitor</Label>
+		<SelectMenu on:change={getUserDimensions} bind:menuItems={userScreenType} bind:value={selectedUserScreen} placeholder="No monitor selected …" class="mb-xxsmall"/>
+		<div class="pr-xxsmall pl-xxsmall mt-negative mb-xxsmall">
+			<Type>Select the screen Figma is currently displayed on</Type>
+		</div>
 
-<div class="wrapper p-xxsmall">
-	<Label>Monitor</Label>
-	<SelectMenu on:change={getUserDimensions} bind:menuItems={userScreenType} bind:value={selectedUserScreen} placeholder="No monitor selected …" class="mb-xxsmall"/>
-	<div class="pr-xxsmall pl-xxsmall mt-negative mb-xxsmall">
-		<Type>Select the screen Figma is currently displayed on</Type>
+		{#if selectedUserScreen && selectedUserScreen.value === 'custom'}
+			<div class="manual">
+				<div class="input pr-xxsmall">
+					<Label>PPI</Label>
+					<Input on:change={getUserDimensions} placeholder="227" bind:value={userPPI} class="mb-xxsmall"/>
+				</div>
+
+				<div class="input">
+					<Label>Screen width in pixels</Label>
+					<Input on:change={getUserDimensions} placeholder="2560" bind:value={userPhysicalWidth} class="mb-xxsmall"/>
+				</div>
+			</div>
+		{/if}
+	</div>
+	<div class="wrapper p-xxsmall">
+		<Label>Target device</Label>
+		<SelectMenu on:change={getTargetDimensions} bind:menuItems={targetScreenType} bind:value={selectedTargetScreen} placeholder="No target selected …" class="mb-xxsmall"/>
+		<div class="pr-xxsmall pl-xxsmall mt-negative mb-xxsmall">
+			<Type>Select the device you are designing for</Type>
+		</div>
+
+		{#if selectedTargetScreen && selectedTargetScreen.value === 'custom'}
+			<div class="manual">
+				<div class="input pr-xxsmall">
+					<Label>PPI</Label>
+					<Input on:change={getTargetDimensions} placeholder="460" bind:value={targetPPI} class="mb-xxsmall"/>
+				</div>
+
+				<div class="input">
+					<Label>Pixel ratio</Label>
+					<Input on:change={getTargetDimensions} placeholder="1" bind:value={targetPixelRatio} class="mb-xxsmall"/>
+				</div>
+			</div>
+		{/if}
+		
+
+		<div class="flex p-xxsmall">
+		<Button on:click={setZoom} bind:disabled={notZoomable}>Set zoom level</Button>
+		</div>
+
 	</div>
 
-	{#if selectedUserScreen && selectedUserScreen.value === 'custom'}
-		<div class="manual">
-			<div class="input pr-xxsmall">
-				<Label>PPI</Label>
-				<Input on:change={getUserDimensions} placeholder="227" bind:value={userPPI} class="mb-xxsmall"/>
-			</div>
-
-			<div class="input">
-				<Label>Screen width in pixels</Label>
-				<Input on:change={getUserDimensions} placeholder="2560" bind:value={userPhysicalWidth} class="mb-xxsmall"/>
+	{#if !(scale === 1)}
+		<div class="alert-wrapper">
+			<div class="alert p-small center">
+				<Icon iconName={IconWarning} color="black"/>
+				<div class="m-xxsmall mb-xsmall center">
+					<Type size="large" weight="bold">
+					Figma UI scaled to {Math.round(scale*100)}%. 
+					</Type>
+					<Type size="small">	
+					Reset 
+			<a href="https://help.figma.com/hc/en-us/articles/360049549913-Adjust-Figma-s-UI-scale" rel="noopener" target="_blank"
+				>UI scaling
+			</a> and try again.
+					</Type>
+				</div>
+				<Button on:click={checkScale} >Retry</Button>
 			</div>
 		</div>
 	{/if}
 </div>
-<div class="wrapper p-xxsmall">
-	<Label>Target device</Label>
-	<SelectMenu on:change={getTargetDimensions} bind:menuItems={targetScreenType} bind:value={selectedTargetScreen} placeholder="No target selected …" class="mb-xxsmall"/>
-	<div class="pr-xxsmall pl-xxsmall mt-negative mb-xxsmall">
-		<Type>Select the device you are designing for</Type>
-	</div>
-
-	{#if selectedTargetScreen && selectedTargetScreen.value === 'custom'}
-		<div class="manual">
-			<div class="input pr-xxsmall">
-				<Label>PPI</Label>
-				<Input on:change={getTargetDimensions} placeholder="460" bind:value={targetPPI} class="mb-xxsmall"/>
-			</div>
-
-			<div class="input">
-				<Label>Pixel ratio</Label>
-				<Input on:change={getTargetDimensions} placeholder="1" bind:value={targetPixelRatio} class="mb-xxsmall"/>
-			</div>
-		</div>
-	{/if}
-	
-
-	<div class="flex p-xxsmall mb-xsmall">
-	<Button on:click={setZoom} bind:disabled={notZoomable}>Set zoom level</Button>
-	</div>
-
-</div>
-
-{#if !(scale === 1)}
-	<div class="alert-wrapper">
-		<div class="alert p-small center">
-			<Icon iconName={IconWarning} color="black"/>
-			<div class="m-xxsmall mb-xsmall center">
-				<Type size="large" weight="bold">
-				Figma UI scaled to {Math.round(scale*100)}%. 
-				</Type>
-				<Type size="small">	
-				Reset 
-		<a href="https://help.figma.com/hc/en-us/articles/360049549913-Adjust-Figma-s-UI-scale" rel="noopener" target="_blank"
-			>UI scaling
-		</a> and try again.
-				</Type>
-			</div>
-			<Button on:click={checkScale} >Retry</Button>
-		</div>
-	</div>
-{/if}
 
 
 <style>
