@@ -58,7 +58,25 @@ figma.ui.onmessage = (msg) => {
                     userDimensions.pixelRatio /
                     targetDimensions.ppi) *
                     targetDimensions.pixelRatio;
-            figma.viewport.zoom = zoomLevel;
+            //   figma.viewport.zoom = zoomLevel;
+            function zoomIncrement(to) {
+                let increment = figma.viewport.zoom > to ? -1 : 1;
+                let distance = (to - figma.viewport.zoom) * increment;
+                if (distance > 0.01) {
+                    figma.viewport.zoom += increment / 100;
+                    return false;
+                }
+                else {
+                    figma.viewport.zoom = to;
+                    return true;
+                }
+            }
+            let zoomAnimation = setInterval(() => {
+                if (zoomIncrement(zoomLevel)) {
+                    clearInterval(zoomAnimation);
+                    return;
+                }
+            }, 17);
             break;
     }
 };
