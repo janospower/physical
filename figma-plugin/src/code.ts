@@ -1,4 +1,4 @@
-figma.showUI(__html__, { width: 375, height: 512 });
+figma.showUI(__html__, { width: 320, height: 512 });
 
 // Plugin data
 const userDimensionsKey = "USER_DIMENSIONS";
@@ -30,7 +30,11 @@ let targetDimensions = storedTargetDimensions
 if (storedUserDimensions && storedTargetDimensions) {
   figma.ui.postMessage({
     userValue: userDimensions.value,
+    userPPI: userDimensions.ppi,
+    userPhysicalWidth: userDimensions.physicalWidth,
     targetValue: targetDimensions.value,
+    targetPPI: targetDimensions.ppi,
+    tagetPixelRatio: targetDimensions.pixelRatio,
   });
 }
 

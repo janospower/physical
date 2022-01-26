@@ -243,17 +243,9 @@
 			'ratio': '3'
 		},
 		{
-			'value': 'ip11pm',
-			'ppi': '458',
-			'label': 'iPhone 11 Pro Max',
-			'group': 'iphone',
-			'selected': false,
-			'ratio': '3'
-		},
-		{
 			'value': 'ip11p',
 			'ppi': '458',
-			'label': 'iPhone 11 Pro / X',
+			'label': 'iPhone 11 Pro / 11 Pro Max / X',
 			'group': 'iphone',
 			'selected': false,
 			'ratio': '3'
@@ -333,10 +325,14 @@
 	onmessage = (event) => {
 		let storedTargetValue = event.data.pluginMessage.targetValue;
 		selectedTargetScreen = targetScreenType.find(n => n.value === storedTargetValue);
+		targetPPI = event.data.pluginMessage.targetPPI;
+		targetPixelRatio = event.data.pluginMessage.tagetPixelRatio;
 		getTargetDimensions()
 
 		let storedUserValue = event.data.pluginMessage.userValue;
 		selectedUserScreen = userScreenType.find(n => n.value === storedUserValue);
+		userPPI = event.data.pluginMessage.userPPI;
+		userPhysicalWidth = event.data.pluginMessage.userPhysicalWidth;
 		getUserDimensions()
 	}
 </script>
