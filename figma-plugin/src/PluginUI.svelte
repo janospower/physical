@@ -230,6 +230,12 @@
 		}, '*');
 	}
 
+	window.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {  
+      setZoom();
+    }
+  });
+
 	let targetScreenType = [{
 			'value': 'custom',
 			'ppi': '',
