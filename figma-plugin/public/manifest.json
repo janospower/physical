@@ -4,8 +4,5 @@
   "api": "1.0.0",
   "main": "code.js",
   "ui": "index.html",
-  "editorType": ["figma"],
-  "menu": [
-    { "name": "Zoom using last used settings", "command": "zoom-to-last" }
-  ]
+  "editorType": ["figma"]
 }

@@ -321,6 +321,19 @@
 
 	$: notZoomable = !userLogicalWidth || !userPhysicalWidth || !userPPI || !targetPixelRatio || !targetPPI;
 
+	$: if (isNaN(userPPI)) {
+		userPPI = null;
+	}
+	$: if (isNaN(userPhysicalWidth)) {
+		userPhysicalWidth = null;
+	}
+	$: if (isNaN(targetPPI)) {
+		targetPPI = null;
+	}
+	$: if (isNaN(targetPixelRatio)) {
+		targetPixelRatio = null;
+	}
+
 	// Get stored data from Figma
 	onmessage = (event) => {
 		let storedTargetValue = event.data.pluginMessage.targetValue;

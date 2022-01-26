@@ -44,16 +44,6 @@ let zoomLevel;
 
 figma.ui.onmessage = (msg) => {
   switch (msg.type) {
-    case "zoom-to-last":
-      console.log(storedZoomValue);
-      if (storedZoomValue) {
-      } else {
-        figma.notify("No stored zoom level. Run plugin normally first");
-        figma.closePlugin;
-        return;
-      }
-      break;
-
     case "get-user-dimensions":
       userDimensions.logicalWidth = msg.userLogicalWidth;
       userDimensions.ppi = msg.userPPI;
