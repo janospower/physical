@@ -422,7 +422,7 @@
 		{/if}
 		
 
-		<div class="flex p-xxsmall">
+		<div class="flex p-xxsmall primary">
 		<Button on:click={setZoom} bind:disabled={notZoomable}>Set zoom level</Button>
 		</div>
 
@@ -451,6 +451,12 @@
 
 
 <style>
+	.primary {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+	}
 
 	.mt-negative {
 		margin-top: -8px;

@@ -1,6 +1,6 @@
 'use strict';
 
-figma.showUI(__html__, { width: 320, height: 512 });
+figma.showUI(__html__, { width: 320, height: 400 });
 // Plugin data
 const userDimensionsKey = "USER_DIMENSIONS";
 const targetDimensionsKey = "TARGET_DIMENSIONS";
@@ -40,7 +40,7 @@ let zoomLevel;
 figma.ui.onmessage = (msg) => {
     switch (msg.type) {
         case "set-height":
-            figma.ui.resize(320, msg.value);
+            //   figma.ui.resize(320, msg.value);
             break;
         case "get-user-dimensions":
             userDimensions.logicalWidth = msg.userLogicalWidth;
